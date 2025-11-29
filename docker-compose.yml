@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+
+  # -----------------------
+  # PostgreSQL Database
+  # -----------------------
+  db:
+    image: postgres
+    container_name: local_pgdb
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: jayeshjain
+      POSTGRES_PASSWORD: jayesh@11
+      POSTGRES_DB: employeedb
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # -----------------------
+  # PgAdmin
+  # -----------------------
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jayesh.kumar@techcanopy.com
+      PGADMIN_DEFAULT_PASSWORD: jayesh@11
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - app-network
+
+  # -----------------------
+  # Spring Boot Backend
+  # -----------------------
+  backend:
+    image: jayesh/backend:latest
+    container_name: employee_backend
+    restart: always
+    build:
+      context: ./backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: jayeshjain
+      DB_PASSWORD: jayesh@11
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/employeedb
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  # -----------------------
+  # React Frontend
+  # -----------------------
+  frontend:
+    image: jayesh/frontend:latest
+    container_name: employee_frontend
+    restart: always
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
+networks:
+  app-network:
+
