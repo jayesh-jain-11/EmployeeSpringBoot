@@ -10,7 +10,7 @@ const EditEmployee = () => {
     const res = await API.get(`/employee/${empid}`);
     setEmployee(res.data);
   };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadData();
   }, []);
