@@ -41,7 +41,7 @@ services:
   # Spring Boot Backend
   # -----------------------
   backend:
-    image: jayesh/backend:latest
+    image: jayeshjain11/backend:latest
     container_name: employee_backend
     restart: always
     environment:
@@ -61,7 +61,7 @@ services:
   # React Frontend
   # -----------------------
   frontend:
-    image: jayesh/frontend:latest
+    image: jayeshjain11/frontend:latest
     container_name: employee_frontend
     restart: always
     depends_on:
