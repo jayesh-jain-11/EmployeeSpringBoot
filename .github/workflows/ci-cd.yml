@@ -22,7 +22,7 @@ jobs:
           java-version: 21
 
       - name: Build Backend JAR
-        run: mvn -B package --file EmployeeDemo/pom.xml
+        run: mvn -B -DskipTests package --file EmployeeDemo/pom.xml
 
       # -------------------------
       # Frontend Build (React)

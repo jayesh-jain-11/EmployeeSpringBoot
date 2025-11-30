@@ -44,8 +44,6 @@ services:
     image: jayesh/backend:latest
     container_name: employee_backend
     restart: always
-    build:
-      context: ./backend
     environment:
       DB_HOST: db
       DB_PORT: 5432
@@ -66,8 +64,6 @@ services:
     image: jayesh/frontend:latest
     container_name: employee_frontend
     restart: always
-    build:
-      context: ./frontend
     depends_on:
       - backend
     ports:
