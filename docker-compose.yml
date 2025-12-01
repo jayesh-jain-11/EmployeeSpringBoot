@@ -6,7 +6,7 @@ services:
   # PostgreSQL Database
   # -----------------------
   db:
-    image: postgres
+    image: postgres:18
     container_name: local_pgdb
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: jayesh@11
       POSTGRES_DB: employeedb
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - local_pgdata:/var/lib/postgresql
     networks:
       - app-network
 
