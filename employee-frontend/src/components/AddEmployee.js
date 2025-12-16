@@ -19,7 +19,7 @@ const AddEmployee = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.post("/employee", employee);
+    await API.post("/api/employee", employee);
     alert("Employee Added Successfully");
   };
 

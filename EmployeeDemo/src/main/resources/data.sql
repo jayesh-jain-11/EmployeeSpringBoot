@@ -1,1 +1,0 @@
-insert into EMPLOYEE  (empid,name,age,email,phone,dept,salary,cur_project)  values (101,'jayesh',21,'jayesh.kumar@techcanopy.com',8095004430,'Dev',50000,'Natwest');

@@ -1,13 +1,16 @@
 package com.jayesh.EmployeeDemo.controller;
 
+import com.jayesh.EmployeeDemo.dto.ApiResponse;
 import com.jayesh.EmployeeDemo.model.Employee;
 import com.jayesh.EmployeeDemo.service.EmployeeService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -21,37 +24,60 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getEmployees(){
-        return new ResponseEntity<>(service.getEmployees(),HttpStatus.OK);
+    public ResponseEntity<ApiResponse<Map<String,Object>>> getEmployees(@RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "5") int size,
+                                                                    @RequestParam(defaultValue = "empid") String sortBy,
+                                                                    @RequestParam(defaultValue = "asc") String direction) {
+
+        Sort sort = direction
+                .equalsIgnoreCase("desc")
+                ?Sort.by(sortBy).descending()
+                :Sort.by(sortBy).ascending();
+        PageRequest pageRequest = PageRequest.of(page,size,sort);
+        Page<Employee> pageResponse = service.getEmployees(pageRequest);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("employees",pageResponse.getContent());
+        responseData.put("page", pageResponse.getNumber());
+        responseData.put("size",pageResponse.getSize());
+        responseData.put("totalPages",pageResponse.getTotalPages());
+        responseData.put("totalElements",pageResponse.getTotalElements());
+        responseData.put("numberOfELements",pageResponse.getNumberOfElements());
+        responseData.put("sortBy",sortBy);
+        responseData.put("direction",direction);
+
+        return ResponseEntity
+                .ok(ApiResponse.success("Employees fetched Successfully",responseData));
     }
 
     @GetMapping("/employee/{empid}")
-    public ResponseEntity<Employee> getEmployee(@PathVariable int empid){
-        return new ResponseEntity<>(service.getEmployeeById(empid),HttpStatus.OK);
+    public ResponseEntity<ApiResponse<Employee>> getEmployee(@PathVariable int empid) {
+        return ResponseEntity
+                .ok(ApiResponse.success(service.getEmployeeById(empid)));
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<?> addEmployee(@RequestBody Employee employee){
+    public ResponseEntity<ApiResponse<Employee>> addEmployee(@RequestBody Employee employee) {
         Employee emp = service.addEmployee(employee);
-        return new ResponseEntity<>(emp, HttpStatus.OK);
+        return ResponseEntity
+                .ok(ApiResponse.success("Employee Created", emp));
     }
 
     @PutMapping("/employee")
-    public ResponseEntity<Employee> updateEmployeeDetails(@RequestBody Employee employee){
+    public ResponseEntity<ApiResponse<Employee>> updateEmployeeDetails(@RequestBody Employee employee) {
         Employee emp = service.updateEmployeeDetails(employee);
-        return new ResponseEntity<>(emp, HttpStatus.OK);
+        return ResponseEntity
+                .ok(ApiResponse.success("Employee Updated", emp));
     }
 
     @DeleteMapping("/employee/{empid}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable int empid){
+    public ResponseEntity<ApiResponse<?>> deleteEmployee(@PathVariable int empid) {
+
         Employee emp = service.getEmployeeById(empid);
-        if(emp != null){
-            service.deleteEmployee(empid);
-            return new ResponseEntity<>("Employee Deleted Successfully", HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>("Employee Not Found",HttpStatus.NOT_FOUND);
-        }
+        service.deleteEmployee(empid);
+
+        return ResponseEntity
+                .ok(ApiResponse.success("Employee Deleted successfully", null));
     }
 
 }

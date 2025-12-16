@@ -4,6 +4,8 @@ package com.jayesh.EmployeeDemo.service;
 import com.jayesh.EmployeeDemo.exception.ResourceNotFoundException;
 import com.jayesh.EmployeeDemo.model.Employee;
 import com.jayesh.EmployeeDemo.repo.EmployeeRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class EmployeeService {
         this.repo = repo;
     }
 
-    public List<Employee> getEmployees() {
-        return repo.findAll();
+    public Page<Employee> getEmployees(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 
 

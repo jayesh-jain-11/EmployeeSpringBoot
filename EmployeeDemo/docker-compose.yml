@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+
+  # -----------------------
+  # PostgreSQL Database
+  # -----------------------
+  db:
+    image: postgres:18
+    container_name: local_pgdb
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: jayeshjain
+      POSTGRES_PASSWORD: jayesh@11
+      POSTGRES_DB: employeedb
+    volumes:
+      - local_pgdata:/var/lib/postgresql
+    networks:
+      - app-network
+
+  # -----------------------
+  # PgAdmin
+  # -----------------------
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jayesh.kumar@techcanopy.com
+      PGADMIN_DEFAULT_PASSWORD: jayesh@11
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - app-network
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
+networks:
+  app-network:
+

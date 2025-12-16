@@ -25,21 +25,6 @@ jobs:
         run: mvn -B -DskipTests package --file EmployeeDemo/pom.xml
 
       # -------------------------
-      # Frontend Build (React)
-      # -------------------------
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "22"
-
-      - name: Install Frontend Dependencies
-        run: npm install --prefix employee-frontend
-
-      - name: Build Frontend
-        run: npm run build --prefix employee-frontend
-        env:
-          CI: false
-      # -------------------------
       # Docker Login
       # -------------------------
       - name: Login to DockerHub
@@ -49,7 +34,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # -------------------------
-      # Build Backend Docker Image
+      # Build & Push Backend Image
       # -------------------------
       - name: Build Backend Image
         run: docker build -t jayeshjain11/backend:latest ./EmployeeDemo
@@ -58,10 +43,14 @@ jobs:
         run: docker push jayeshjain11/backend:latest
 
       # -------------------------
-      # Build Frontend Docker Image
+      # Build & Push Frontend Image
       # -------------------------
       - name: Build Frontend Image
-        run: docker build -t jayeshjain11/frontend:latest ./employee-frontend
+        run: |
+          docker build \
+            --build-arg REACT_APP_API_BASE_URL=http://backend:8080 \
+            -t jayeshjain11/frontend:latest ./employee-frontend
 
       - name: Push Frontend Image
         run: docker push jayeshjain11/frontend:latest
+

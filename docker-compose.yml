@@ -45,11 +45,11 @@ services:
     container_name: employee_backend
     restart: always
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: jayeshjain
-      DB_PASSWORD: jayesh@11
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/employeedb
+    	SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/employeedb
+    	DB_USER: jayeshjain
+   	DB_PASSWORD: jayesh@11
+    	JWT_SECRET: lwuuN3ELImqsJ+S5PopZCwRlAPxcm/h56I1HUxLJ0jc=
+    	APP_CORS_ORIGINS: http://localhost:3000,http://192.168.0.39:3000
     depends_on:
       - db
     ports:
@@ -64,6 +64,8 @@ services:
     image: jayeshjain11/frontend:latest
     container_name: employee_frontend
     restart: always
+    environment:
+    	REACT_APP_API_BASE_URL: http://backend:8080
     depends_on:
       - backend
     ports:

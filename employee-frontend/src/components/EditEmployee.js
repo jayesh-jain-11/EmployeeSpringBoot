@@ -7,10 +7,10 @@ const EditEmployee = () => {
   const [employee, setEmployee] = useState(null);
 
   const loadData = async () => {
-    const res = await API.get(`/employee/${empid}`);
-    setEmployee(res.data);
+    const res = await API.get(`/api/employee/${empid}`);
+    setEmployee(res.data.data);
   };
-// eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     loadData();
   }, []);
@@ -21,7 +21,7 @@ const EditEmployee = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.put("/employee", employee);
+    await API.put("/api/employee", employee);
     alert("Employee Updated");
   };
 
