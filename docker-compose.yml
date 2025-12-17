@@ -63,8 +63,6 @@ services:
     image: jayeshjain11/frontend:latest
     container_name: employee_frontend
     restart: always
-    environment:
-      REACT_APP_API_BASE_URL: http://localhost:8080
     depends_on:
       - backend
     ports:
