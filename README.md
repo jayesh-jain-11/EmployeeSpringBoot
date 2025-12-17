@@ -1,7 +1,5 @@
 # Project Title
 
-## Table of Contents
-
 # Employee Management System
 
 A full-stack **Employee Management System** built with **Spring Boot**, **React**, **PostgreSQL**, and **Docker**, featuring **JWT authentication**, secure REST APIs, pagination & sorting, and a CI/CD pipeline using **GitHub Actions**. Designed with production-ready practices and containerized deployment. 🚀
@@ -196,5 +194,3 @@ MCA Student | Full Stack Developer
 GitHub: https://github.com/jayeshjain11
 
 ---
-
-Would you like me to also create a PR with this change? (I can open it and paste the PR description.)
