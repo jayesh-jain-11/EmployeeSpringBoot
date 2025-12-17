@@ -2,7 +2,7 @@ name: Full CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-deploy:
@@ -48,9 +48,8 @@ jobs:
       - name: Build Frontend Image
         run: |
           docker build \
-            --build-arg REACT_APP_API_BASE_URL=http://backend:8080 \
+            --build-arg REACT_APP_API_BASE_URL=http://localhost:8080 \
             -t jayeshjain11/frontend:latest ./employee-frontend
 
       - name: Push Frontend Image
         run: docker push jayeshjain11/frontend:latest
-
