@@ -28,7 +28,7 @@ public class UserService {
 
         Users user = userRepo.findByUserName(request.getUsername());
         if(authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(user.getUserName());
+            String token = jwtService.generateToken(user.getUsername());
             System.out.println(token);
             return token;
         }
