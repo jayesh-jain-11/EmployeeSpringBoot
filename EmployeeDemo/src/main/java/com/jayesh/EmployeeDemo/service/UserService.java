@@ -37,7 +37,7 @@ public class UserService {
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     public Users register(Users user) {
-        if(null == userRepo.findByUserName(user.getUserName())) {
+        if(null == userRepo.findByUserName(user.getUsername())) {
             user.setPassword(encoder.encode(user.getPassword()));
             return userRepo.save(user);
         }
