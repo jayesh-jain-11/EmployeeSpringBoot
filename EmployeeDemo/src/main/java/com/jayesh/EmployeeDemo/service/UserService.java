@@ -28,7 +28,7 @@ public class UserService {
 
         Users user = userRepo.findByUserName(request.getUsername());
         if(authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(user.getUsername());
+            String token = jwtService.generateToken(user.getUserName());
             System.out.println(token);
             return token;
         }
@@ -37,7 +37,7 @@ public class UserService {
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     public Users register(Users user) {
-        if(null == userRepo.findByUserName(user.getUsername())) {
+        if(null == userRepo.findByUserName(user.getUserName())) {
             user.setPassword(encoder.encode(user.getPassword()));
             return userRepo.save(user);
         }
